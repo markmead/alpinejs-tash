@@ -1,8 +1,8 @@
 # Apline JS Tash
 
-Alpine JS plugin `x-tash` allows you to render variables without the need of using `<span x-text="xyz"></span>` 🥳
+Alpine JS plugin `x-tash` stops the need of `<span x-text="xyz">` spam to render Alpine JS data 🥳
 
-## Example
+## Example 👀
 
 ### Core
 
@@ -30,11 +30,11 @@ Here's the new way of doing things with `x-tash` from the plugin
 </div>
 ```
 
-**You don't have to render every variable**
+**🙋 You don't have to render every variable**
 
-If you only wanted to render the `name` and the `age` you can pass `x-tash="name,age` and `{company}` will be left alone! 🤩
+In the example if you only wanted to render the `name` and the `age`, then you can pass `x-tash="name,age` and `{company}` will be left alone! 🤩
 
-## Install
+## Install 🌟
 
 It's very easy to install Alpine JS plugins! 🙌
 
@@ -66,7 +66,9 @@ window.Alpine = Alpine;
 Alpine.start();
 ```
 
-### Stats
+### Stats 📊
+
+Here's some stats about the Alpine JS Tash package! As you can see, it's tiny 🤏
 
 ![](https://img.shields.io/bundlephobia/min/alpinejs-tash)
 ![](https://img.shields.io/npm/v/alpinejs-tash)
