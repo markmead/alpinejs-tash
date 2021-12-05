@@ -1,0 +1,20 @@
+{
+  "name": "x-tash",
+  "version": "1.0.0",
+  "description": "Render Alpine JS variables with moustache syntax {}",
+  "keywords": [
+    "Alpine",
+    "Alpine JS"
+  ],
+  "author": "Mark Mead",
+  "license": "ISC",
+  "main": "dist/tash.cjs.js",
+  "module": "dist/tash.esm.js",
+  "unpkg": "dist/tash.min.js",
+  "dependencies": {
+    "esbuild": "^0.12.22"
+  },
+  "scripts": {
+    "build": "node scripts/build.js"
+  }
+}
