@@ -30,6 +30,8 @@ Here's the new way of doing things with `x-tash` from the plugin
 </div>
 ```
 
+_You can add spaces after your commas in `x-tash`, it doesn't have to follow the example format_
+
 **🙋 You don't have to render every variable**
 
 In the example if you only wanted to render the `name` and the `age`, then you can pass `x-tash="name,age` and `{company}` will be left alone! 🤩
