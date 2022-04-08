@@ -1,23 +1,26 @@
 export default function (Alpine) {
   Alpine.directive("tash", (el, {}, { evaluate, effect }) => {
-    let expressions = el.getAttribute("x-tash").split(",");
-    let template = document.createElement("template");
-    let finder = (exp) => new RegExp(`{${exp}}`, "g");
+    const componentExpressions = el
+      .getAttribute("x-tash")
+      .split(",")
+      .map((expression) => expression.trim());
+    const templateEl = document.createElement("template");
+    const findExpression = (expression) => new RegExp(`{${expression}}`, "g");
 
-    template.innerHTML = el.innerHTML;
+    templateEl.innerHTML = el.innerHTML;
 
-    let html = `${template.innerHTML}`;
+    let componentHtml = `${componentHtml.innerHTML}`;
 
     effect(() => {
-      expressions.forEach((exp) => {
-        let value = evaluate(exp);
-        let regex = finder(exp);
+      componentExpressions.forEach((expression) => {
+        const evaluatedValue = evaluate(expression);
+        const finderRegex = findExpression(expression);
 
-        html = html.replace(regex, value);
+        componentHtml = componentHtml.replace(finderRegex, evaluatedValue);
       });
 
-      el.innerHTML = html;
-      html = template.innerHTML;
+      el.innerHTML = componentHtml;
+      componentHtml = template.innerHTML;
     });
   });
 }
