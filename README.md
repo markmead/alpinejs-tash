@@ -1,4 +1,4 @@
-# Apline JS Tash
+# Alpine JS Tash
 
 Alpine JS plugin `x-tash` stops the need of `<span x-text="xyz">` spam to render Alpine JS data 🥳
 
