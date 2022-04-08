@@ -9,7 +9,7 @@ Alpine JS plugin `x-tash` stops the need of `<span x-text="xyz">` spam to render
 Here's the old way of doing things with `x-text` from Alpine JS
 
 ```html
-<div x-data="{ name: 'Mark', age: 24, company: 'Wiro' }">
+<div x-data="{ name: 'Mark', age: 24, company: 'Neon & GetCandy' }">
   <p>
     Hello I am <span x-text="name"></span> and I am
     <span x-text="age"></span> years old, currently I work at
@@ -23,7 +23,7 @@ Here's the old way of doing things with `x-text` from Alpine JS
 Here's the new way of doing things with `x-tash` from the plugin
 
 ```html
-<div x-data="{ name: 'Mark', age: 24, company: 'Wiro' }">
+<div x-data="{ name: 'Mark', age: 24, company: 'Neon & GetCandy' }">
   <p x-tash="name,age,company">
     Hello I am {name} and I am {age} years old, currently I work at {company}
   </p>
