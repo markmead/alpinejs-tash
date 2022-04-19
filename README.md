@@ -68,6 +68,21 @@ window.Alpine = Alpine;
 Alpine.start();
 ```
 
+## Options 🧐
+
+### Changing Delimiters
+
+It's possible to change the defaul delimiters `{}` by adding the `x-tash-delimitiers` attribute.
+
+```html
+<p x-tash="..." x-tash-delimiters='["{{", "}}"]'>...</p>
+<p x-tash="..." x-tash-delimiters='["*", "*"]'>...</p>
+<p x-tash="..." x-tash-delimiters='["@@", "@@"]'>...</p>
+<p x-tash="..." x-tash-delimiters='[":", "("]'>...</p>
+```
+
+_It's required to wrap the value of `x-tash-delimiters` in single quotes._
+
 ### Stats 📊
 
 Here's some stats about the Alpine JS Tash package! As you can see, it's tiny 🤏
