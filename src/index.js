@@ -20,7 +20,7 @@ export default function (Alpine) {
       });
 
       el.innerHTML = componentHtml;
-      componentHtml = template.innerHTML;
+      componentHtml = templateEl.innerHTML;
     });
   });
 }
