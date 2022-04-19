@@ -9,7 +9,7 @@ export default function (Alpine) {
 
     templateEl.innerHTML = el.innerHTML;
 
-    let componentHtml = `${componentHtml.innerHTML}`;
+    let componentHtml = `${templateEl.innerHTML}`;
 
     effect(() => {
       componentExpressions.forEach((expression) => {

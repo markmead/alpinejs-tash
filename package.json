@@ -1,6 +1,6 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Render Alpine JS variables with moustache syntax {}",
   "keywords": [
     "Alpine",
