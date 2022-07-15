@@ -3,11 +3,14 @@ export default function (Alpine) {
     const [leftDelimiter, rightDelimiter] = JSON.parse(
       el.getAttribute("x-tash-delimiters")
     ) || ["{", "}"];
+
     const componentExpressions = el
       .getAttribute("x-tash")
       .split(",")
       .map((expression) => expression.trim());
+
     const templateEl = document.createElement("template");
+
     const findExpression = (expression) =>
       new RegExp(`${leftDelimiter}${expression}${rightDelimiter}`, "g");
 
@@ -18,12 +21,14 @@ export default function (Alpine) {
     effect(() => {
       componentExpressions.forEach((expression) => {
         const evaluatedValue = evaluate(expression);
+
         const finderRegex = findExpression(expression);
 
         componentHtml = componentHtml.replace(finderRegex, evaluatedValue);
       });
 
       el.innerHTML = componentHtml;
+
       componentHtml = templateEl.innerHTML;
     });
   });

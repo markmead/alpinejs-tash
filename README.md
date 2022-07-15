@@ -1,12 +1,12 @@
 # Alpine JS Tash
 
-Alpine JS plugin `x-tash` stops the need of `<span x-text="xyz">` spam to render Alpine JS data 🥳
+Alpine JS plugin to stop the need of `x-text="..."` to render Alpine JS data 🥳
 
 ## Example 👀
 
 ### Core
 
-Here's the old way of doing things with `x-text` from Alpine JS
+Here's the approach you'd take if you were using `x-text`
 
 ```html
 <div x-data="{ name: 'Mark', age: 24, company: 'Neon & GetCandy' }">
@@ -20,10 +20,10 @@ Here's the old way of doing things with `x-text` from Alpine JS
 
 ### Plugin
 
-Here's the new way of doing things with `x-tash` from the plugin
+Here's the approach you'd take if you were using `x-tash`
 
 ```html
-<div x-data="{ name: 'Mark', age: 24, company: 'Neon & GetCandy' }">
+<div x-data="{ name: 'Mark', age: 25, company: 'Neon & GetCandy' }">
   <p x-tash="name,age,company">
     Hello I am {name} and I am {age} years old, currently I work at {company}
   </p>
@@ -34,7 +34,7 @@ _You can add spaces after your commas in `x-tash`, it doesn't have to follow the
 
 **🙋 You don't have to render every variable**
 
-In the example if you only wanted to render the `name` and the `age`, then you can pass `x-tash="name,age` and `{company}` will be left alone! 🤩
+From the example, if you wanted to render the `name` and `age` then you can pass `x-tash="name,age` and `{company}` will be ignored! 🤩
 
 ## Install 🌟
 
@@ -43,7 +43,11 @@ It's very easy to install Alpine JS plugins! 🙌
 ### CDN
 
 ```html
-<script src="https://unpkg.com/alpinejs-tash@1.0.0/dist/tash.min.js"></script>
+<script
+  defer
+  src="https://unpkg.com/alpinejs-tash@1.x.x/dist/tash.min.js"
+></script>
+
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 ```
 
@@ -58,14 +62,14 @@ yarn add -D alpinejs-tash
 Then you can register the plugin.
 
 ```js
-import Alpine from "alpinejs";
-import tash from "alpinejs-tash";
+import Alpine from 'alpinejs'
+import tash from 'alpinejs-tash'
 
-Alpine.plugin(tash);
+Alpine.plugin(tash)
 
-window.Alpine = Alpine;
+window.Alpine = Alpine
 
-Alpine.start();
+Alpine.start()
 ```
 
 ## Options 🧐
@@ -84,8 +88,6 @@ It's possible to change the defaul delimiters `{}` by adding the `x-tash-delimit
 _It's required to wrap the value of `x-tash-delimiters` in single quotes._
 
 ### Stats 📊
-
-Here's some stats about the Alpine JS Tash package! As you can see, it's tiny 🤏
 
 ![](https://img.shields.io/bundlephobia/min/alpinejs-tash)
 ![](https://img.shields.io/npm/v/alpinejs-tash)
