@@ -1,21 +1,23 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.0.6",
-  "description": "Alpine JS plugin to stop the need of x-text to render Alpine JS data 🥳",
+  "version": "1.0.7",
+  "description": "Alpine JS plugin to stop the need of x-text to render data 🥳",
   "keywords": [
     "Alpine",
     "Alpine JS",
-    "Alpine JS Plugins"
+    "Alpine JS Plugins",
+    "Alpine JS Rendering",
+    "Alpine JS Moustache",
+    "Moustache Syntax"
   ],
   "author": "Mark Mead",
   "license": "MIT",
-  "main": "dist/tash.cjs.js",
   "module": "dist/tash.esm.js",
   "unpkg": "dist/tash.min.js",
   "scripts": {
     "build": "node scripts/build.js"
   },
   "devDependencies": {
-    "esbuild": "^0.12.22"
+    "esbuild": "^0.16.2"
   }
 }

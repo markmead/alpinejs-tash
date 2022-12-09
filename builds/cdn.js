@@ -1,5 +1,3 @@
-import tash from "../src/index.js";
+import tash from '../src/index.js'
 
-document.addEventListener("alpine:init", () => {
-  window.Alpine.plugin(tash);
-});
+document.addEventListener('alpine:init', () => window.Alpine.plugin(tash))
