@@ -2,7 +2,7 @@
 
 Alpine JS plugin to stop the need of `x-text="..."` to render Alpine JS data 🥳
 
-## Example 👀
+## Example
 
 ### Core
 
@@ -23,20 +23,24 @@ Here's the approach you'd take if you were using `x-text`
 Here's the approach you'd take if you were using `x-tash`
 
 ```html
-<div x-data="{ name: 'Mark', age: 25, company: 'Neon & GetCandy' }">
-  <p x-tash="name,age,company">
+<div x-data="{ name: 'Mark', age: 25, company: 'HyperUI' }">
+  <p x-tash="name, age, company">
     Hello I am {name} and I am {age} years old, currently I work at {company}
   </p>
 </div>
 ```
 
-_You can add spaces after your commas in `x-tash`, it doesn't have to follow the example format_
-
 **🙋 You don't have to render every variable**
 
-From the example, if you wanted to render the `name` and `age` then you can pass `x-tash="name,age` and `{company}` will be ignored! 🤩
+From the example, if you wanted to render the `name` and `age` then you can pass
+`x-tash="name, age` and `{company}` will be ignored! 🤩
 
-## Install 🌟
+### Reactivity
+
+All values that are rendered with `x-tash` are reactive to changes in the Alpine
+JS data.
+
+## Install
 
 It's very easy to install Alpine JS plugins! 🙌
 
@@ -72,11 +76,12 @@ window.Alpine = Alpine
 Alpine.start()
 ```
 
-## Options 🧐
+## Options
 
 ### Changing Delimiters
 
-It's possible to change the defaul delimiters `{}` by adding the `x-tash-delimitiers` attribute.
+It's possible to change the defaul delimiters `{}` by adding the
+`x-tash-delimitiers` attribute.
 
 ```html
 <p x-tash="..." x-tash-delimiters='["{{", "}}"]'>...</p>
@@ -87,7 +92,7 @@ It's possible to change the defaul delimiters `{}` by adding the `x-tash-delimit
 
 _It's required to wrap the value of `x-tash-delimiters` in single quotes._
 
-### Stats 📊
+### Stats
 
 ![](https://img.shields.io/bundlephobia/min/alpinejs-tash)
 ![](https://img.shields.io/npm/v/alpinejs-tash)

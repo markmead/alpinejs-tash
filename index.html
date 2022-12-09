@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alpine JS Plugin</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script defer src="./dist/tash.min.js"></script>
+
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+
+  <body>
+    <div x-data="{ name: 'Mark', age: 25, company: 'HyperUI' }">
+      <input type="text" x-model="name" />
+
+      <p x-tash="name, age, company">
+        Hello I am {name} and I am {age} years old, currently I work at
+        {company}
+      </p>
+    </div>
+  </body>
+</html>
