@@ -9,7 +9,7 @@ Alpine JS plugin to stop the need of `x-text="..."` to render Alpine JS data ðŸ¥
 Here's the approach you'd take if you were using `x-text`
 
 ```html
-<div x-data="{ name: 'Mark', age: 24, company: 'Neon & GetCandy' }">
+<div x-data="{ name: 'Mark', age: 25, company: 'HyperUI' }">
   <p>
     Hello I am <span x-text="name"></span> and I am
     <span x-text="age"></span> years old, currently I work at

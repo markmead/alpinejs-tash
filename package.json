@@ -1,6 +1,6 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Alpine JS plugin to stop the need of x-text to render data 🥳",
   "keywords": [
     "Alpine",
