@@ -1,6 +1,6 @@
 # Alpine JS Tash
 
-Alpine JS plugin to stop the need of `x-text="..."` to render Alpine JS data 🥳
+Use a more familiar syntax when rendering Alpine JS `{variables}` 🚀
 
 ## Install
 
