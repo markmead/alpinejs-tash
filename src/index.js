@@ -1,35 +1,37 @@
 export default function (Alpine) {
-  Alpine.directive('tash', (el, {}, { evaluate, effect }) => {
-    const [leftDelimiter, rightDelimiter] = JSON.parse(
-      el.getAttribute('x-tash-delimiters')
-    ) || ['{', '}']
+  Alpine.directive(
+    'tash',
+    (el, { modifiers, expression }, { evaluate, effect }) => {
+      const expressionFinder = (expression) =>
+        new RegExp(`${leftDelimiter}${expression}${rightDelimiter}`, 'g')
 
-    const componentExpressions = el
-      .getAttribute('x-tash')
-      .split(',')
-      .map((expression) => expression.trim())
+      const useVue = modifiers.includes('vue')
+      const useAngular = modifiers.includes('angular')
+      const leftDelimiter = useVue ? '{{ ' : useAngular ? '{{' : '{'
+      const rightDelimiter = useVue ? ' }}' : useAngular ? '}}' : '}'
 
-    const templateEl = document.createElement('template')
+      const expressionArray = expression
+        .split(',')
+        .map((expressionItem) => expressionItem.trim())
 
-    const findExpression = (expression) =>
-      new RegExp(`${leftDelimiter}${expression}${rightDelimiter}`, 'g')
+      const htmlReference = document.createElement('template')
 
-    templateEl.innerHTML = el.innerHTML
+      htmlReference.innerHTML = el.innerHTML
 
-    let componentHtml = `${templateEl.innerHTML}`
+      let componentHtml = `${htmlReference.innerHTML}`
 
-    effect(() => {
-      componentExpressions.forEach((expression) => {
-        const evaluatedValue = evaluate(expression)
+      effect(() => {
+        expressionArray.forEach((expression) => {
+          const evaluatedValue = evaluate(expression)
+          const finderRegex = expressionFinder(expression)
 
-        const finderRegex = findExpression(expression)
+          componentHtml = componentHtml.replace(finderRegex, evaluatedValue)
+        })
 
-        componentHtml = componentHtml.replace(finderRegex, evaluatedValue)
+        el.innerHTML = componentHtml
+
+        componentHtml = htmlReference.innerHTML
       })
-
-      el.innerHTML = componentHtml
-
-      componentHtml = templateEl.innerHTML
-    })
-  })
+    }
+  )
 }

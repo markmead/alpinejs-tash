@@ -1,69 +1,29 @@
 # Alpine JS Tash
 
-Alpine JS plugin to stop the need of `x-text="..."` to render Alpine JS data 🥳
-
-## Example
-
-### Core
-
-Here's the approach you'd take if you were using `x-text`
-
-```html
-<div x-data="{ name: 'Mark', age: 25, company: 'HyperUI' }">
-  <p>
-    Hello I am <span x-text="name"></span> and I am
-    <span x-text="age"></span> years old, currently I work at
-    <span x-text="company"></span>
-  </p>
-</div>
-```
-
-### Plugin
-
-Here's the approach you'd take if you were using `x-tash`
-
-```html
-<div x-data="{ name: 'Mark', age: 25, company: 'HyperUI' }">
-  <p x-tash="name, age, company">
-    Hello I am {name} and I am {age} years old, currently I work at {company}
-  </p>
-</div>
-```
-
-**🙋 You don't have to render every variable**
-
-From the example, if you wanted to render the `name` and `age` then you can pass
-`x-tash="name, age` and `{company}` will be ignored! 🤩
-
-### Reactivity
-
-All values that are rendered with `x-tash` are reactive to changes in the Alpine
-JS data.
+Use a more familiar syntax when rendering Alpine JS `{variables}` 🚀
 
 ## Install
 
 It's very easy to install Alpine JS plugins! 🙌
 
-### CDN
+### With a CDN
 
 ```html
 <script
   defer
-  src="https://unpkg.com/alpinejs-tash@1.x.x/dist/tash.min.js"
+  src="https://unpkg.com/alpinejs-tash@latest/dist/tash.min.js"
 ></script>
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 ```
 
-### NPM/Yarn
+### With a Package Manager
 
 ```shell
 npm i -D alpinejs-tash
 
 yarn add -D alpinejs-tash
 ```
-
-Then you can register the plugin.
 
 ```js
 import Alpine from 'alpinejs'
@@ -76,21 +36,31 @@ window.Alpine = Alpine
 Alpine.start()
 ```
 
-## Options
+## Example
 
-### Changing Delimiters
-
-It's possible to change the defaul delimiters `{}` by adding the
-`x-tash-delimitiers` attribute.
+### Plugin
 
 ```html
-<p x-tash="..." x-tash-delimiters='["{{", "}}"]'>...</p>
-<p x-tash="..." x-tash-delimiters='["*", "*"]'>...</p>
-<p x-tash="..." x-tash-delimiters='["@@", "@@"]'>...</p>
-<p x-tash="..." x-tash-delimiters='[":", "("]'>...</p>
+<div x-data="{ name: 'John Doe', age: 50, company: 'GitHub' }">
+  <p x-tash="name, age, company">
+    Hello, I am {name}! I am {age} years old and I currently work at {company}!
+  </p>
+
+  <!-- Hello, I am John Doe! I am 50 years old and I currently work at GitHub! -->
+</div>
 ```
 
-_It's required to wrap the value of `x-tash-delimiters` in single quotes._
+You don't have to use `{variable}` as your syntax.
+
+If you prefer Vue syntax use `x-tash.vue` and you can write `{{ variable }}` 🐸
+
+If you prefer Angular syntax use `x-tash.angular` and you can write
+`{{variable}}` 🦞
+
+By default it will use the `{variable}` syntax that React, Svelte, Solid,
+Astro... And many others use.
+
+_All variables you pass to `x-tash` use Alpine JS reactivity!_
 
 ### Stats
 

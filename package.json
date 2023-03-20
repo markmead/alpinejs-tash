@@ -1,13 +1,14 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.0.9",
-  "description": "Alpine JS plugin to stop the need of x-text to render data 🥳",
+  "version": "1.1.0",
+  "description": "Use a more familiar syntax when rendering Alpine JS `{variables}` 🚀",
   "keywords": [
-    "Alpine",
-    "Alpine JS",
+    "Alpine JS Moustache",
     "Alpine JS Plugins",
     "Alpine JS Rendering",
-    "Alpine JS Moustache",
+    "Alpine JS Text",
+    "Alpine JS",
+    "Alpine",
     "Moustache Syntax"
   ],
   "author": "Mark Mead",
@@ -18,6 +19,6 @@
     "build": "node scripts/build.js"
   },
   "devDependencies": {
-    "esbuild": "^0.16.2"
+    "esbuild": "^0.17.11"
   }
 }
