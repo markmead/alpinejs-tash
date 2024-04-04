@@ -1,6 +1,6 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Use a more familiar syntax when rendering Alpine JS `{variables}` 🚀",
   "keywords": [
     "Alpine JS Moustache",
@@ -19,6 +19,6 @@
     "build": "node scripts/build.js"
   },
   "devDependencies": {
-    "esbuild": "^0.17.11"
+    "esbuild": "^0.20.2"
   }
 }
