@@ -1,15 +1,11 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.1.1",
-  "description": "Use a more familiar syntax when rendering Alpine JS `{variables}` 🚀",
+  "version": "1.2.0",
+  "description": "Alpine JS plugin that enables mustache-like templating syntax for simpler data binding and rendering in your Alpine JS applications 🚀",
   "keywords": [
-    "Alpine JS Moustache",
-    "Alpine JS Plugins",
-    "Alpine JS Rendering",
-    "Alpine JS Text",
-    "Alpine JS",
-    "Alpine",
-    "Moustache Syntax"
+    "alpine",
+    "alpinejs",
+    "templating"
   ],
   "author": "Mark Mead",
   "license": "MIT",
