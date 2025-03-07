@@ -1,6 +1,6 @@
 {
   "name": "alpinejs-tash",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Alpine JS plugin that enables mustache-like templating syntax for simpler data binding and rendering in your Alpine JS applications 🚀",
   "keywords": [
     "alpine",
