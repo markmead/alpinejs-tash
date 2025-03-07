@@ -7,6 +7,7 @@ export default function (Alpine) {
 
       const useVue = modifiers.includes('vue')
       const useAngular = modifiers.includes('angular')
+
       const leftDelimiter = useVue ? '{{ ' : useAngular ? '{{' : '{'
       const rightDelimiter = useVue ? ' }}' : useAngular ? '}}' : '}'
 
