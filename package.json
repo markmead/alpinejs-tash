@@ -9,8 +9,8 @@
   ],
   "author": "Mark Mead",
   "license": "MIT",
-  "module": "dist/tash.esm.js",
-  "unpkg": "dist/tash.min.js",
+  "module": "dist/esm.min.js",
+  "unpkg": "dist/cdn.min.js",
   "scripts": {
     "build": "node scripts/build.js"
   },
