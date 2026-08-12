@@ -24,11 +24,12 @@ Against the `x-text` equivalent:
 ## Features
 
 - 🔍 Keys are detected from the template — no need to list them
-- 🎨 Three syntax styles: `{name}`, `{{ name }}`, `{{name}}`
+- 🔁 Works inside `x-for` and `x-if`
 - 🏷️ Works in text **and** in attributes
+- 🎨 Configurable delimiters, so it won't fight Blade, Twig or Jinja
 - 🔄 Fully reactive, and updates without rebuilding your DOM
 - 🛡️ Values render as text, so data can't inject markup
-- 🪶 ~1KB gzipped, zero dependencies
+- 🪶 ~1.5KB gzipped, zero dependencies
 
 ## Install
 
@@ -113,27 +114,60 @@ Alpine's own attributes — anything starting with `x-`, `@` or `:` — are skip
 because Alpine already evaluates those as expressions. Use `:title="label"` for
 those, not `title="{label}"`.
 
-## Syntax Styles
+### Loops and conditionals
 
-| Modifier   | Syntax       |
-| ---------- | ------------ |
-| none       | `{name}`     |
-| `.vue`     | `{{ name }}` |
-| `.angular` | `{{name}}`   |
+Placeholders inside `x-for` and `x-if` work, and resolve against the scope they
+sit in:
 
 ```html
-<p x-tash>Hello, {name}!</p>
-
-<p x-tash.vue>Hello, {{ name }}!</p>
-
-<p x-tash.angular>Hello, {{name}}!</p>
+<ul x-tash x-data="{ rows: [{ label: 'a', n: 1 }] }">
+  <template x-for="row in rows">
+    <li title="row {row.label}">{row.label} = {row.n}</li>
+  </template>
+</ul>
 ```
 
-`.vue` and `.angular` are aliases for the same `{{ }}` pair — whitespace inside
-the braces is optional in both, so pick whichever reads better to you.
+Content inserted after init is picked up as it appears, so rows added later
+render too. Putting `x-tash` on the element inside the loop works equally well
+if you prefer to scope it tightly:
 
-Choose one style per element. Mixing `{ }` and `{{ }}` inside the same `x-tash`
-is not supported.
+```html
+<template x-for="item in items">
+  <li x-tash>Item: {item}</li>
+</template>
+```
+
+## Delimiters
+
+The default pair is `{` and `}`. Change it globally when it collides with
+server-side templating — Blade, Twig, Jinja and Handlebars all use `{{ }}`:
+
+```js
+import Alpine from 'alpinejs'
+import tash from 'alpinejs-tash'
+
+Alpine.plugin(tash({ delimiters: ['[[', ']]'] }))
+```
+
+```html
+<p x-tash>Hello, [[name]]! Blade's {{ name }} is left alone.</p>
+```
+
+From a CDN, set the config before the plugin script runs:
+
+```html
+<script>
+  window.tashConfig = { delimiters: ['[[', ']]'] }
+</script>
+
+<script defer src="https://unpkg.com/alpinejs-tash@latest/dist/cdn.min.js"></script>
+
+<script defer src="https://unpkg.com/alpinejs@latest/dist/cdn.min.js"></script>
+```
+
+Whitespace inside the delimiters is always optional, so `[[name]]` and
+`[[ name ]]` are equivalent. To use Vue or Angular style, set the pair to
+`['{{', '}}']`.
 
 ## How Values Render
 
@@ -152,17 +186,21 @@ content you trust.
 
 ## Notes & Limitations
 
-**The template is read once, at init.** Tash snapshots the placeholders when the
-element initialises, then writes only into the text nodes and attributes that
-contained them. Adding new `{key}` text to the DOM afterwards does nothing.
+**Each node is bound once.** Tash captures a node's original text the first time
+it sees it, then writes rendered output back into that same node. Editing the
+DOM by hand to add new `{key}` text won't be picked up, but anything Alpine
+inserts — `x-for` rows, `x-if` branches — is.
 
 **Updates preserve your DOM.** Because only matched nodes are rewritten, child
 elements keep their identity across updates — a form input keeps its value,
 focus isn't lost, event listeners survive, and nested `x-data` components aren't
 torn down and rebuilt.
 
-**Keys must exist in scope.** An unresolvable key throws the same Alpine
-expression error that `x-text` would.
+**An unresolvable key only affects its own placeholder.** Keys are evaluated
+independently, so `{config}` with no `config` in scope is left on the page as
+literal text while every other placeholder still renders. Alpine logs its usual
+expression error for it. If a literal `{...}` in your copy is triggering that
+noise, name your real keys explicitly to opt the rest out.
 
 **Nested `x-tash` elements own their own subtree**, and are skipped by the
 parent, so a placeholder is never rendered twice.
@@ -176,6 +214,11 @@ parent, so a placeholder is never rendered twice.
   that binding to `x-html`.
 - **The key list is now optional**, and `x-tash` with no expression auto-detects
   keys. Existing `x-tash="a, b"` markup keeps working unchanged.
+- **The `.vue` and `.angular` modifiers are gone**, replaced by the `delimiters`
+  option. Both were fixed to `{{ }}`, which is exactly the pair that collides
+  with server-side templating; configuring it globally covers those two styles
+  and every other pair. Replace `x-tash.vue` / `x-tash.angular` with `x-tash`
+  and `Alpine.plugin(tash({ delimiters: ['{{', '}}'] }))`.
 - **`null` and `undefined` render as an empty string** rather than the text
   `null` / `undefined`, and objects render as JSON rather than `[object Object]`.
 - **Placeholders in attributes now render.** Previously only element content was

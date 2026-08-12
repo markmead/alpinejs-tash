@@ -31,9 +31,9 @@ workarounds for old browsers.
 
 **Every function and variable name is at least two words** — `templateKeys` not
 `keys`, `renderValue` not `render`, `hostEl` not `el`. The exception is
-properties destructured from Alpine's own objects (`{ modifiers, expression }`,
-`{ effect, evaluateLater }`, `{ name, value }` off an attribute), which keep the
-names they arrive with.
+properties destructured from Alpine's own objects (`{ expression }`,
+`{ effect, cleanup }`, `{ name, value }` off an attribute), which keep the names
+they arrive with.
 
 Alpine is never a dependency. The plugin uses the `Alpine` instance handed to it,
 and the CDN build uses the global. Keep it that way.
@@ -59,12 +59,11 @@ filenames — 1.2.1 shipped only `module`, so Node resolved neither `import` nor
 `require`. `dist/cdn.min.js` keeps its name deliberately: existing `@latest`
 script tags point at it.
 
-### Bind once, render many — the load-bearing constraint
+### Bind per node, render many — the load-bearing constraint
 
-The directive walks the element **once at init** and collects a binding per text
-node and per attribute that contains a placeholder, capturing that node's
-original string as `templateText`. Every later render replaces into that captured
-string and writes the result back to `nodeValue` / `setAttribute`.
+A binding is one text node or one attribute. On binding, the node's current
+string is captured as `templateText`; every later render replaces into that
+captured string and writes back to `nodeValue` / `setAttribute`.
 
 This is what separates 2.0.0 from 1.x, which rebuilt `el.innerHTML` on every
 reactive tick. Writing `innerHTML` destroys and recreates every child, so it lost
@@ -73,33 +72,56 @@ and rendered values as HTML. Do not reintroduce an `innerHTML` write.
 
 Consequences worth remembering before changing anything:
 
-- Placeholders added to the DOM after init are never picked up. The walk does not
-  re-run.
 - Values are written to text nodes, so they render as text. That is the XSS
   boundary — anything that stringifies into markup must stay out of `innerHTML`.
-- Renders are diffed against the current `nodeValue` before writing, so an effect
-  that recomputes an unchanged string touches no DOM.
+- Renders are diffed against current content before writing, so an effect that
+  recomputes an unchanged string touches no DOM.
+- Capturing `templateText` is one-shot per node, which is why `boundTextNodes` /
+  `boundAttributes` exist. `x-for` reports moved nodes as newly added, and
+  re-binding one would capture its *rendered* output as the new template.
+
+### Dynamic content
+
+A `MutationObserver` on the host element binds nodes that `x-for` and `x-if`
+insert after init. Only `childList` is observed — rendering writes `nodeValue`
+and attributes, so observing either would feed back into itself.
+
+Each binding compiles its evaluators against **its own element**
+(`Alpine.evaluateLater(ownerEl, ...)`), not the host, which is what makes a key
+resolve against the `x-for` scope it sits in.
+
+Effects are created **per batch of newly bound nodes**, not per binding, so a
+churning list doesn't accumulate an effect per row ever rendered. Each effect
+prunes disconnected bindings from its own batch as it runs.
+
+### Per-key evaluation
+
+Each key gets its own evaluator. This is deliberate and worth not "optimising"
+back into a single batched expression: Alpine catches expression errors
+internally and **never invokes the callback**, so one unresolvable key in a
+batched `[(a),(b)]` silently blanked every placeholder on the element. Per key, a
+failure just leaves that one placeholder as literal text — a `try/catch` cannot
+achieve this, because nothing is thrown to us.
 
 ### Other non-obvious pieces
 
-- `evaluateLater` compiles **one** array expression covering every key, so a tick
-  is a single evaluation rather than one per key. Each key is wrapped in its own
-  parentheses (`[(a),(b)]`) so a key containing a comma stays one array element.
+- Delimiters are configurable, so the placeholder pattern can't assume braces.
+  It captures `[\s\S]+?` lazily rather than `[^{}]`, and `findTemplateKeys`
+  discards a captured key containing either delimiter — that's an unbalanced
+  `{a {b}`, which should stay literal rather than reach Alpine.
 - `buildPlaceholderPattern` returns a **non-global** regex by default. The same
-  pattern object is reused across many `.test()` calls during the walk, and a
-  `g` flag would carry `lastIndex` between them and skip nodes. Only `findKeys`
-  asks for `g`, because `matchAll` requires it.
-- Key alternation is sorted longest-first so `{name}` can't match ahead of
-  `{nameLong}`.
-- Both delimiters and keys go through `escapeRegExp`. Keys are user input and
-  routinely contain regex metacharacters — `user.name` unescaped would also match
-  `{userXname}`.
+  object is reused across many `.test()` calls, and a `g` flag would carry
+  `lastIndex` between them and skip nodes. Only the pattern used for `matchAll`
+  and `replace` asks for `g`; both of those handle `lastIndex` safely.
+- Delimiters go through `escapeRegExp` — they're user input now.
 - Replacement uses a **function**, not a string. A value containing `$&` or
   `` $` `` would otherwise be interpreted as a replacement pattern.
-- `.vue` and `.angular` resolve to the same `{{`/`}}` pair; the patterns allow
-  optional inner whitespace, so both spacings work under either modifier.
+- The default export is dual-mode: `Alpine.plugin(tash)` and
+  `Alpine.plugin(tash({ ... }))` both work, distinguished by duck-typing
+  `typeof candidate?.directive === 'function'`. The CDN build reads
+  `window.tashConfig`, since a CDN user has no import to pass options through.
 - The TreeWalker rejects subtrees of nested `x-tash` elements (they render
-  themselves) and of `<script>`/`<style>`. It never yields its own root, so the
-  host element's attributes are collected separately before the walk.
+  themselves) and of `<script>`/`<style>`/`<template>`. Template content is
+  reached through the clones `x-for` and `x-if` insert, not directly.
 - Attributes matching `x-`, `@` or `:` are skipped — Alpine evaluates those as
   expressions, and interpolating into one would corrupt it.
