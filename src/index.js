@@ -14,8 +14,8 @@ export default function tash(alpineOrOptions) {
   return (Alpine) => registerDirective(Alpine, alpineOrOptions)
 }
 
-function isAlpineInstance(candidate) {
-  return typeof candidate?.directive === 'function'
+function isAlpineInstance(alpineCandidate) {
+  return typeof alpineCandidate?.directive === 'function'
 }
 
 function registerDirective(Alpine, pluginOptions = {}) {
@@ -63,8 +63,8 @@ function registerDirective(Alpine, pluginOptions = {}) {
     // nodes are bound as they arrive. Only childList is observed: rendering
     // writes `nodeValue` and attributes, neither of which re-triggers this.
     const domObserver = new MutationObserver((mutationList) => {
-      for (const mutation of mutationList) {
-        for (const addedNode of mutation.addedNodes) bindSubtree(addedNode)
+      for (const domMutation of mutationList) {
+        for (const addedNode of domMutation.addedNodes) bindSubtree(addedNode)
       }
     })
 
@@ -80,11 +80,15 @@ function registerDirective(Alpine, pluginOptions = {}) {
       // One effect per batch, rather than per binding, so a churning x-for does
       // not accumulate an effect for every row it has ever rendered.
       effect(() => {
-        for (let index = newBindings.length - 1; index >= 0; index--) {
-          const nodeBinding = newBindings[index]
+        for (
+          let bindingIndex = newBindings.length - 1;
+          bindingIndex >= 0;
+          bindingIndex--
+        ) {
+          const nodeBinding = newBindings[bindingIndex]
 
           if (!nodeBinding.ownerEl.isConnected) {
-            newBindings.splice(index, 1)
+            newBindings.splice(bindingIndex, 1)
 
             continue
           }
@@ -259,7 +263,8 @@ function resolveDelimiters(configuredDelimiters) {
     Array.isArray(configuredDelimiters) &&
     configuredDelimiters.length === 2 &&
     configuredDelimiters.every(
-      (delimiter) => typeof delimiter === 'string' && delimiter.length > 0
+      (candidateDelimiter) =>
+        typeof candidateDelimiter === 'string' && candidateDelimiter.length > 0
     )
 
   if (!isValidPair)

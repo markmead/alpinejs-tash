@@ -118,7 +118,7 @@ achieve this, because nothing is thrown to us.
   `` $` `` would otherwise be interpreted as a replacement pattern.
 - The default export is dual-mode: `Alpine.plugin(tash)` and
   `Alpine.plugin(tash({ ... }))` both work, distinguished by duck-typing
-  `typeof candidate?.directive === 'function'`. The CDN build reads
+  `typeof alpineCandidate?.directive === 'function'`. The CDN build reads
   `window.tashConfig`, since a CDN user has no import to pass options through.
 - The TreeWalker rejects subtrees of nested `x-tash` elements (they render
   themselves) and of `<script>`/`<style>`/`<template>`. Template content is
