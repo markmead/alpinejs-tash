@@ -13,6 +13,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+
+# agent tooling
+/.agents
+/.claude
+skills-lock.json
 
 # local env files
 .env.local
